@@ -6,11 +6,13 @@ import { Navbar, CalendarEvent, CalendarModal, FabAddNew, FabDelete} from '../';
 
 import { localizer, getMessagesES } from '../../helpers';
 import { useUiStore, useCalendarStore } from '../../hooks';
+import { useAuthStore } from '../../hooks/useAuthStore';
 
 
 
 export const CalendarPage = () => {
 
+  const {user} = useAuthStore();
   const { openDateModal } = useUiStore();
   const { events, setActiveEvent, startLoadingEvents } = useCalendarStore();
 
@@ -18,8 +20,10 @@ export const CalendarPage = () => {
 
   const eventStyleGetter = ( event, start, end, isSelected ) => {
 
+    const isMyEvent = (user.uid === event.user.id)||(user.uid ===event.user._id);
+
     const style = {
-      backgroundColor: '#347CF7',
+      backgroundColor:isMyEvent ?  '#347CF7': '#465669',
       borderRadius: '0px',
       opacity: 0.8,
       color: 'white'
